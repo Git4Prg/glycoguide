@@ -12,14 +12,14 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('GlycoGuide'),
         centerTitle: true,
-        backgroundColor: Colors.green[100],
+        backgroundColor: Colors.blue[100],
         toolbarHeight: 80.0,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: Ink(
               decoration: ShapeDecoration(
-                color: Colors.green[200],
+                color: Colors.blue[200],
                 shape: const CircleBorder(),
               ),
               child: IconButton(
@@ -35,22 +35,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          Ink(
-            decoration: ShapeDecoration(
-              color: Colors.green[200],
-              shape: const CircleBorder(),
-            ),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingsPage()),
-                );
-              },
-              icon: const Icon(Icons.settings),
-              iconSize: 30.0,
-            ),
-          )
         ],
       ),
       body: Column(
@@ -86,7 +70,22 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Ink(
                     decoration: ShapeDecoration(
-                      color: Colors.green[200],
+                      color: Colors.blue[200],
+                      shape: const CircleBorder(),
+                    ),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.photo_camera),
+                      iconSize: 35.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Ink(
+                    decoration: ShapeDecoration(
+                      color: Colors.blue[200],
                       shape: const CircleBorder(),
                     ),
                     child: IconButton(
@@ -97,21 +96,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Ink(
-                    decoration: ShapeDecoration(
-                      color: Colors.green[200],
-                      shape: const CircleBorder(),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.photo_camera),
-                      iconSize: 35.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
               ],
             ),
           ),

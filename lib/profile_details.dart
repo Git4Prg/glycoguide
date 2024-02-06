@@ -24,7 +24,7 @@ class ProfileDetails extends StatelessWidget {
               ),
               const TextField(
                 decoration: InputDecoration(
-                  labelText: 'Date of Birth',
+                  labelText: 'Age',
                 ),
               ),
               const TextField(
