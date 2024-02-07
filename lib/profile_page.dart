@@ -75,13 +75,53 @@ class ProfilePage extends StatelessWidget {
                         height: 3.0,
                       ),
                       Text('Weight: '),
+                      const SizedBox(
+                        height: 3.0,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          Container()
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Blood Glucose Level'),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    Text('Fasting: '),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    Text('Pre-meal: '),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    Text('Post-meal: '),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                    Text('Bedtime: '),
+                    const SizedBox(
+                      height: 3.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
