@@ -52,30 +52,30 @@ class ProfilePage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Name: '),
-                      const SizedBox(
+                      SizedBox(
                         height: 3.0,
                       ),
                       Text('Age: '),
-                      const SizedBox(
+                      SizedBox(
                         height: 3.0,
                       ),
                       Text('Gender: '),
-                      const SizedBox(
+                      SizedBox(
                         height: 3.0,
                       ),
                       Text('Height: '),
-                      const SizedBox(
+                      SizedBox(
                         height: 3.0,
                       ),
                       Text('Weight: '),
-                      const SizedBox(
+                      SizedBox(
                         height: 3.0,
                       ),
                     ],
@@ -86,35 +86,36 @@ class ProfilePage extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+            padding:
+                const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
             child: Card(
               elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Blood Glucose Level'),
-                    const SizedBox(
+                    SizedBox(
                       height: 3.0,
                     ),
                     Text('Fasting: '),
-                    const SizedBox(
+                    SizedBox(
                       height: 3.0,
                     ),
                     Text('Pre-meal: '),
-                    const SizedBox(
+                    SizedBox(
                       height: 3.0,
                     ),
                     Text('Post-meal: '),
-                    const SizedBox(
+                    SizedBox(
                       height: 3.0,
                     ),
                     Text('Bedtime: '),
-                    const SizedBox(
+                    SizedBox(
                       height: 3.0,
                     ),
                   ],

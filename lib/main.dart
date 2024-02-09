@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:glycoguide/home_page.dart';
 import 'package:glycoguide/login_page.dart';
-import 'package:glycoguide/profile_page.dart';
-import 'package:glycoguide/profile_details.dart';
+// import 'package:glycoguide/login_page.dart';
+// import 'package:glycoguide/profile_page.dart';
+// import 'package:glycoguide/profile_details.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +17,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: LoginPage(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        fontFamily: 'Lato',
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: Colors.green.shade900,
+      ),
     );
   }
 }

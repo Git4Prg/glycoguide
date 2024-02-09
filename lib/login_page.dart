@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:glycoguide/home_page.dart';
+//import 'package:glycoguide/home_page.dart';
 import 'package:glycoguide/profile_details.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
