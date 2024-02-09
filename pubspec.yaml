@@ -70,6 +70,8 @@ flutter:
     - assets/images/glycoguide.jpg
     - assets/images/bot_image.jpg
     - assets/images/background2.jpeg
+    - assets/images/background3.jpeg
+    - assets/loader.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

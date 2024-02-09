@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                       opacity: 0.7,
-                      image: AssetImage("assets/images/background2.jpeg"),
+                      image: AssetImage("assets/images/background3.jpeg"),
                       fit: BoxFit.cover),
                 ),
                 child: Column(
@@ -81,51 +81,52 @@ class _HomePageState extends State<HomePage> {
                       // ),
                     ),
                     Expanded(
-                        child: ListView.builder(
-                            itemCount: messages.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                  margin: const EdgeInsets.only(
-                                      bottom: 12, left: 16, right: 16),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: Colors.amber.withOpacity(0.4)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        messages[index].role == "user"
-                                            ? "User"
-                                            : "AI",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color:
-                                                messages[index].role == "user"
-                                                    ? Colors.amber.shade400
-                                                    : Colors.purple.shade400),
-                                      ),
-                                      const SizedBox(
-                                        height: 12,
-                                      ),
-                                      Text(
-                                        messages[index].parts.first.text,
-                                        style: TextStyle(height: 1.2),
-                                      ),
-                                    ],
-                                  ));
-                            })),
+                      child: ListView.builder(
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 12, left: 16, right: 16),
+                            padding: const EdgeInsets.all(16),
+                            // decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(16),
+                            //     color: Colors.grey.withOpacity(0.4)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  messages[index].role == "user"
+                                      ? "User"
+                                      : "AI",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: messages[index].role == "user"
+                                          ? Colors.amber.shade500
+                                          : Colors.purple.shade900),
+                                ),
+                                // const SizedBox(
+                                //   height: 12,
+                                // ),
+                                Text(
+                                  messages[index].parts.first.text,
+                                  style: const TextStyle(height: 1.2),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                     if (chatBloc.generating)
-                      const Row(
+                      Row(
                         children: [
-                          // Container(
-                          //   height: 100,
-                          //   width: 100,
-                          //   child: Lottie.asset('assets/loader.json'),
-                          // ),
-                          SizedBox(width: 20),
-                          Text("Loading...")
+                          Container(
+                            height: 100,
+                            width: 100,
+                            child: Lottie.asset('assets/loader.json'),
+                          ),
+                          const SizedBox(width: 20),
+                          const Text("Loading...")
                         ],
                       ),
                     Container(
@@ -136,14 +137,14 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             child: TextField(
                               controller: textEditingController,
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                               cursorColor: Theme.of(context).primaryColor,
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   fillColor: Colors.white,
-                                  hintText: "Ask Something from AI",
+                                  hintText: "Ask about your diet plan",
                                   hintStyle:
                                       TextStyle(color: Colors.grey.shade400),
                                   filled: true,
@@ -170,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                               child: CircleAvatar(
                                 radius: 30,
                                 backgroundColor: Theme.of(context).primaryColor,
-                                child: Center(
+                                child: const Center(
                                   child: Icon(Icons.send, color: Colors.white),
                                 ),
                               ),
