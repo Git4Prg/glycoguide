@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/home_page.dart';
 import 'package:glycoguide/settings.dart';
+import 'package:glycoguide/signin_screen.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -34,7 +36,13 @@ class ProfilePage extends StatelessWidget {
             iconSize: 30.0,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Signed Out");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()));
+              });
+            },
             icon: const Icon(Icons.logout_outlined),
             iconSize: 30.0,
           ),

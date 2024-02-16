@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/home_page.dart';
 import 'package:glycoguide/reusable_widget.dart';
-// import 'package:glycoguide/home_screen.dart';
+import 'package:glycoguide/profile_details.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                            builder: (context) => const ProfileDetails()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });

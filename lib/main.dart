@@ -6,7 +6,7 @@ import 'package:glycoguide/reusable_widget.dart';
 import 'package:glycoguide/signin_screen.dart';
 // import 'package:glycoguide/login_page.dart';
 // import 'package:glycoguide/profile_page.dart';
-// import 'package:glycoguide/profile_details.dart';
+import 'package:glycoguide/profile_details_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const SignInScreen(),
+      home: const MedicalHistory(),
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: 'Lato',
