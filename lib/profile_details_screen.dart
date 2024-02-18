@@ -1,21 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/home_page.dart';
+import 'package:glycoguide/signup_screen.dart';
 import 'package:glycoguide/reusable_widget.dart';
 // import 'package:glycoguide/profile_details.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:glycoguide/utils/constants.dart';
 
 class ProfileDetailsScreen extends StatefulWidget {
-  const ProfileDetailsScreen({Key? key}) : super(key: key);
+  ProfileDetailsScreen({Key? key}) : super(key: key);
 
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<ProfileDetailsScreen> {
-  final _passwordTextController = TextEditingController();
-  final _emailTextController = TextEditingController();
-  final _userNameTextController = TextEditingController();
+  final _nameTextController = TextEditingController();
+  final _ageTextController = TextEditingController();
+  final _genderTextController = TextEditingController();
+  final _heightTextController = TextEditingController();
+  final _weightTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,33 +50,34 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Name ", _userNameTextController),
+                userDetailsTextField("Name ", _nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Age", _emailTextController),
+                userDetailsTextField("Age", _ageTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Gender", _passwordTextController),
+                userDetailsTextField("Gender", _genderTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Height", _passwordTextController),
+                userDetailsTextField("Height", _heightTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Weight", _passwordTextController),
+                userDetailsTextField("Weight", _weightTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Next", () {
-                  // FirebaseAuth.instance
-                  //     .createUserWithEmailAndPassword(
-                  //         email: _emailTextController.text,
-                  //         password: _passwordTextController.text)
-                  //     .then((value) {
-                  //   print("Created New Account");
+                  userDetails.doc('General').set({
+                    'Name': _nameTextController.text,
+                    'Age': _ageTextController.text,
+                    'Gender': _genderTextController.text,
+                    'Height': _heightTextController.text,
+                    'Weight': _weightTextController.text,
+                  });
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -153,6 +159,14 @@ class _MedicalHistoryState extends State<MedicalHistory> {
                   height: 20,
                 ),
                 firebaseUIButton(context, "Next", () {
+                  userDetails.doc('Medical History').set({
+                    'Date of Diagnosis': _input1.text,
+                    'Heart Disease': _input2.text,
+                    'Insulin Pump': _input3.text,
+                    'Blood Sugar': _input4.text,
+                    'Other Complications': _input5.text,
+                    'Exercise frequency': _input6.text,
+                  });
                   Navigator.push(
                       context,
                       MaterialPageRoute(

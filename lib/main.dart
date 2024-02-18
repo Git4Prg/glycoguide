@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/home_page.dart';
 import 'package:glycoguide/login_page.dart';
@@ -7,6 +8,7 @@ import 'package:glycoguide/signin_screen.dart';
 // import 'package:glycoguide/login_page.dart';
 // import 'package:glycoguide/profile_page.dart';
 import 'package:glycoguide/profile_details_screen.dart';
+import 'package:glycoguide/signup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MedicalHistory(),
+      home: SignUpScreen(),
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: 'Lato',

@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/home_page.dart';
+import 'package:glycoguide/profile_details_screen.dart';
 import 'package:glycoguide/reusable_widget.dart';
 import 'package:glycoguide/profile_details.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:glycoguide/utils/constants.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -13,9 +16,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
-  TextEditingController _userNameTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,31 +46,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 reusableTextField("Enter UserName", Icons.person_outline, false,
-                    _userNameTextController),
+                    userNameTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Enter Email Id", Icons.person_outline, false,
-                    _emailTextController),
+                    emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Enter Password", Icons.lock_outlined, true,
-                    _passwordTextController),
+                    passwordTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Sign Up", () {
+                  CollectionReference users =
+                      FirebaseFirestore.instance.collection('Users');
+                  users.doc(emailTextController.text).set({
+                    'Username': userNameTextController.text,
+                    'Email ID': emailTextController.text,
+                    'Password': passwordTextController.text,
+                  });
+
                   FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
+                          email: emailTextController.text,
+                          password: passwordTextController.text)
                       .then((value) {
                     print("Created New Account");
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProfileDetails()));
+                            builder: (context) => ProfileDetailsScreen()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
