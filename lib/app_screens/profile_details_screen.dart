@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:glycoguide/home_page.dart';
-import 'package:glycoguide/signup_screen.dart';
-import 'package:glycoguide/reusable_widget.dart';
-// import 'package:glycoguide/profile_details.dart';
-import 'package:glycoguide/utils/color_utils.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:glycoguide/app_screens/homepage_screen.dart';
+// import 'package:glycoguide/app_screens/signup_screen.dart';
+import 'package:glycoguide/utils/reusable_widget.dart';
+// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/utils/constants.dart';
 
@@ -21,35 +20,37 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
   final _genderTextController = TextEditingController();
   final _heightTextController = TextEditingController();
   final _weightTextController = TextEditingController();
+  final _eatingPrefTextController = TextEditingController();
+  final _toleranceTextController = TextEditingController();
+  final _allergyTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
           "User Profile",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontFamily: 'Righteous',
+            fontSize: 28,
+            // fontWeight: FontWeight,
+            color: Colors.white,
+          ),
         ),
+        centerTitle: true,
       ),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            hexStringToColor("CB2B93"),
-            hexStringToColor("9546C4"),
-            hexStringToColor("5E61F4")
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          color: Colors.black,
           child: SingleChildScrollView(
               child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
               children: <Widget>[
-                const SizedBox(
-                  height: 20,
-                ),
                 userDetailsTextField("Name ", _nameTextController),
                 const SizedBox(
                   height: 20,
@@ -70,6 +71,20 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
                 const SizedBox(
                   height: 20,
                 ),
+                userDetailsTextField("Vegan/Vegetarian/Non-vegetarian",
+                    _eatingPrefTextController),
+                const SizedBox(
+                  height: 20,
+                ),
+                userDetailsTextField(
+                    "Lactose/Gluten tolerance", _toleranceTextController),
+                const SizedBox(
+                  height: 20,
+                ),
+                userDetailsTextField("Allergy", _allergyTextController),
+                const SizedBox(
+                  height: 20,
+                ),
                 firebaseUIButton(context, "Next", () {
                   userDetails.doc('General').set({
                     'Name': _nameTextController.text,
@@ -77,14 +92,15 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
                     'Gender': _genderTextController.text,
                     'Height': _heightTextController.text,
                     'Weight': _weightTextController.text,
+                    'Eating Preference': _eatingPrefTextController,
+                    'Lactose/Gluten Tolerance': _toleranceTextController,
+                    'Allergy': _allergyTextController,
                   });
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MedicalHistory()));
-                  // }).onError((error, stackTrace) {
-                  //   print("Error ${error.toString()}");
-                  // });
+                  // }).onError((error, stackTrace) {});
                 })
               ],
             ),
@@ -111,22 +127,22 @@ class _MedicalHistoryState extends State<MedicalHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: hexStringToColor("CB2B93"),
+        backgroundColor: Colors.black,
         elevation: 0,
         title: const Text(
-          "Medical History",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          "medical history",
+          style: TextStyle(
+            fontFamily: 'Righteous',
+            fontSize: 35,
+            color: Colors.white,
+          ),
         ),
+        centerTitle: true,
       ),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            hexStringToColor("CB2B93"),
-            hexStringToColor("9546C4"),
-            hexStringToColor("5E61F4"),
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          color: Colors.black,
           child: SingleChildScrollView(
               child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

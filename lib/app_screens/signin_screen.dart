@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:glycoguide/home_page.dart';
-import 'package:glycoguide/reusable_widget.dart';
-// import 'package:glycoguide/home_screen.dart';
+import 'package:glycoguide/app_screens/homepage_screen.dart';
+import 'package:glycoguide/utils/reusable_widget.dart';
 import 'package:glycoguide/reset_password.dart';
-import 'package:glycoguide/signup_screen.dart';
-import 'package:glycoguide/utils/color_utils.dart';
+import 'package:glycoguide/app_screens/signup_screen.dart';
+// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -23,19 +22,13 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          hexStringToColor("CB2B93"),
-          hexStringToColor("9546C4"),
-          hexStringToColor("5E61F4")
-        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        color: Colors.black,
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
             child: Column(
               children: <Widget>[
-                logoWidget("assets/images/glycoguide.jpg"),
+                logoWidget("assets/images/signup-img.png"),
                 const SizedBox(
                   height: 30,
                 ),

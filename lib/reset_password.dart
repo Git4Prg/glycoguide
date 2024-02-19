@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:glycoguide/reusable_widget.dart';
+import 'package:glycoguide/utils/reusable_widget.dart';
 import 'package:glycoguide/home_screen.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:glycoguide/home_page.dart';
-import 'package:glycoguide/profile_details_screen.dart';
-import 'package:glycoguide/reusable_widget.dart';
-import 'package:glycoguide/profile_details.dart';
-import 'package:glycoguide/utils/color_utils.dart';
+// import 'package:glycoguide/app_screens/homepage_screen.dart';
+import 'package:glycoguide/app_screens/profile_details_screen.dart';
+import 'package:glycoguide/utils/reusable_widget.dart';
+// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/utils/constants.dart';
 
@@ -25,18 +24,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 0,
         title: const Text(
           "Sign Up",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
+        centerTitle: true,
       ),
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            hexStringToColor("CB2B93"),
-            hexStringToColor("9546C4"),
-            hexStringToColor("5E61F4")
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+          color: Colors.black,
           child: SingleChildScrollView(
               child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
@@ -79,9 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ProfileDetailsScreen()));
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
-                  });
+                  }).onError((error, stackTrace) {});
                 })
               ],
             ),
