@@ -1,6 +1,7 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/app_screens/homepage_screen.dart';
+import 'package:glycoguide/app_screens/medical_history_screen.dart';
 // import 'package:glycoguide/app_screens/signup_screen.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
 // import 'package:glycoguide/utils/color_utils.dart';
@@ -15,15 +16,14 @@ class ProfileDetailsScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<ProfileDetailsScreen> {
-  final _nameTextController = TextEditingController();
-  final _ageTextController = TextEditingController();
-  final _genderTextController = TextEditingController();
-  final _heightTextController = TextEditingController();
-  final _weightTextController = TextEditingController();
-  final _eatingPrefTextController = TextEditingController();
-  final _toleranceTextController = TextEditingController();
-  final _allergyTextController = TextEditingController();
-
+  final nameTextController = TextEditingController();
+  final ageTextController = TextEditingController();
+  final genderTextController = TextEditingController();
+  final heightTextController = TextEditingController();
+  final weightTextController = TextEditingController();
+  final eatingPrefTextController = TextEditingController();
+  final toleranceTextController = TextEditingController();
+  final allergyTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,142 +51,60 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
               children: <Widget>[
-                userDetailsTextField("Name ", _nameTextController),
+                userDetailsTextField("Name ", nameTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Age", _ageTextController),
+                userDetailsTextField("Age", ageTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Gender", _genderTextController),
+                userDetailsTextField("Gender", genderTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Height", _heightTextController),
+                userDetailsTextField("Height", heightTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Weight", _weightTextController),
+                userDetailsTextField("Weight", weightTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 userDetailsTextField("Vegan/Vegetarian/Non-vegetarian",
-                    _eatingPrefTextController),
+                    eatingPrefTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 userDetailsTextField(
-                    "Lactose/Gluten tolerance", _toleranceTextController),
+                    "Lactose/Gluten tolerance", toleranceTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Allergy", _allergyTextController),
+                userDetailsTextField("Allergy", allergyTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Next", () {
+                  CollectionReference userDetails = FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(emailTextController.text)
+                      .collection('userDetails');
                   userDetails.doc('General').set({
-                    'Name': _nameTextController.text,
-                    'Age': _ageTextController.text,
-                    'Gender': _genderTextController.text,
-                    'Height': _heightTextController.text,
-                    'Weight': _weightTextController.text,
-                    'Eating Preference': _eatingPrefTextController,
-                    'Lactose/Gluten Tolerance': _toleranceTextController,
-                    'Allergy': _allergyTextController,
+                    'Name': nameTextController.text,
+                    'Age': ageTextController.text,
+                    'Gender': genderTextController.text,
+                    'Height': heightTextController.text,
+                    'Weight': weightTextController.text,
+                    'Eating Preference': eatingPrefTextController.text,
+                    'Lactose/Gluten Tolerance': toleranceTextController.text,
+                    'Allergy': allergyTextController.text,
                   });
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MedicalHistory()));
                   // }).onError((error, stackTrace) {});
-                })
-              ],
-            ),
-          ))),
-    );
-  }
-}
-
-class MedicalHistory extends StatefulWidget {
-  const MedicalHistory({super.key});
-
-  @override
-  State<MedicalHistory> createState() => _MedicalHistoryState();
-}
-
-class _MedicalHistoryState extends State<MedicalHistory> {
-  final _input1 = TextEditingController();
-  final _input2 = TextEditingController();
-  final _input3 = TextEditingController();
-  final _input4 = TextEditingController();
-  final _input5 = TextEditingController();
-  final _input6 = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        title: const Text(
-          "medical history",
-          style: TextStyle(
-            fontFamily: 'Righteous',
-            fontSize: 35,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          color: Colors.black,
-          child: SingleChildScrollView(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Column(
-              children: <Widget>[
-                userDetailsTextField(
-                    "When were you diagnosed with diabetes?", _input1),
-                const SizedBox(
-                  height: 20,
-                ),
-                userDetailsTextField("Do you have a heart disease?", _input2),
-                const SizedBox(
-                  height: 20,
-                ),
-                userDetailsTextField("Do you use an insulin pump?", _input3),
-                const SizedBox(
-                  height: 20,
-                ),
-                userDetailsTextField("Do you test your blood sugar?", _input4),
-                const SizedBox(
-                  height: 20,
-                ),
-                userDetailsTextField(
-                    "Please specify any other complications(if any)", _input5),
-                const SizedBox(
-                  height: 20,
-                ),
-                userDetailsTextField("How often do you exercise?", _input6),
-                const SizedBox(
-                  height: 20,
-                ),
-                firebaseUIButton(context, "Next", () {
-                  userDetails.doc('Medical History').set({
-                    'Date of Diagnosis': _input1.text,
-                    'Heart Disease': _input2.text,
-                    'Insulin Pump': _input3.text,
-                    'Blood Sugar': _input4.text,
-                    'Other Complications': _input5.text,
-                    'Exercise frequency': _input6.text,
-                  });
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
                 })
               ],
             ),

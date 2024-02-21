@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:glycoguide/app_screens/navbar_screen.dart';
 import 'package:glycoguide/bloc/chat_bloc.dart';
 import 'package:glycoguide/models/chat_message_model.dart';
 import 'package:glycoguide/app_screens/profile_page.dart';
+import 'package:glycoguide/utils/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 // import 'package:glycoguide/settings.dart';
@@ -28,7 +30,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavBar(),
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           "glyco guide",
           style: TextStyle(
@@ -38,9 +42,19 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         centerTitle: true,
-        // toolbarHeight: 75.0,
+        toolbarHeight: 65,
         backgroundColor: Colors.black,
         actions: [
+          IconButton(
+            onPressed: () {
+              _showDoubleInputDialog(context);
+            },
+            icon: const Icon(
+              Icons.edit_note_rounded,
+              color: Colors.white,
+            ),
+            iconSize: 30.0,
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -79,11 +93,8 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.only(
-                              bottom: 12, left: 16, right: 16),
-                          padding: const EdgeInsets.all(16),
-                          // decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(16),
-                          //     color: Colors.grey.withOpacity(0.4)),
+                              bottom: 0, left: 10, right: 10),
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -118,17 +129,23 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Container(
+                          padding: const EdgeInsets.only(left: 10),
                           height: 100,
                           width: 100,
                           child: Lottie.asset('assets/loader.json'),
                         ),
                         const SizedBox(width: 20),
-                        const Text("Loading...")
+                        const Text(
+                          "Loading...",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        )
                       ],
                     ),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 30, horizontal: 16),
+                        vertical: 25, horizontal: 16),
                     child: Row(
                       children: [
                         Expanded(
@@ -143,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                                 fillColor: Colors.white,
                                 hintText: "Ask about your diet plan",
                                 hintStyle:
-                                    TextStyle(color: Colors.grey.shade400),
+                                    TextStyle(color: Colors.grey.shade500),
                                 filled: true,
                                 focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(100),
@@ -152,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                                             Theme.of(context).primaryColor))),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 8),
                         InkWell(
                           onTap: () {
                             if (textEditingController.text.isNotEmpty) {
@@ -164,13 +181,13 @@ class _HomePageState extends State<HomePage> {
                           },
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundColor: Colors.grey.shade900,
+                            backgroundColor: Colors.grey.shade800,
                             child: const Center(
                               child: Icon(Icons.send, color: Colors.white),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 8),
                         CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.grey.shade800,
@@ -182,20 +199,6 @@ class _HomePageState extends State<HomePage> {
                               Icons.image_outlined,
                               color: Colors.white,
                             ),
-                            // child: CircleAvatar(
-                            //   radius: 32,
-                            //   backgroundColor: Colors.white,
-                            //   child: CircleAvatar(
-                            //     radius: 30,
-                            //     backgroundColor: Theme.of(context).primaryColor,
-                            //     child: const Center(
-                            //       child: Icon(
-                            //         Icons.image_outlined,
-                            //         color: Colors.white,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                           ),
                         )
                       ],
@@ -205,7 +208,7 @@ class _HomePageState extends State<HomePage> {
               );
 
             default:
-              return SizedBox();
+              return const SizedBox();
           }
         },
       ),
@@ -220,5 +223,75 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       selectedImage = File(returnedImage.path);
     });
+  }
+
+  void _showDoubleInputDialog(BuildContext context) {
+    TextEditingController bloodSugarController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            'Hi Parigyan,',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Montserrat',
+              fontSize: 20,
+            ),
+          ),
+          content: TextField(
+            autofocus: true,
+            controller: bloodSugarController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            decoration: const InputDecoration(
+              hintText: 'Enter your Fasting Blood Sugar',
+              hintStyle: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Montserrat',
+                fontSize: 15,
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                double? inputValue = double.tryParse(bloodSugarController.text);
+                if (inputValue != null) {
+                  // Do something with the input value
+                  print('Entered value: $inputValue');
+                } else {
+                  // Handle invalid input
+                  print('Invalid input');
+                }
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Montserrat',
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

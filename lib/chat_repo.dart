@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:glycoguide/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:glycoguide/models/chat_message_model.dart';
@@ -10,7 +11,7 @@ class ChatRepo {
       Dio dio = Dio();
 
       final response = await dio.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${dotenv.env["APIKEY"]}",
         data: {
           "contents": previousMessages.map((e) => e.toMap()).toList(),
           "generationConfig": {
