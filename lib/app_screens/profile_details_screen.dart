@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/app_screens/medical_history_screen.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
 import 'package:flutter/material.dart';

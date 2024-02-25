@@ -4,8 +4,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/app_screens/signin_screen.dart';
-import 'package:glycoguide/utils/app_resources.dart';
-import 'package:glycoguide/utils/color_extensions.dart';
 import 'package:glycoguide/utils/constants.dart';
 
 class ProfilePage extends StatefulWidget {

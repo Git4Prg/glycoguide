@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/utils/constants.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
-import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +12,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  TextEditingController _emailTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
