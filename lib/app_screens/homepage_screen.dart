@@ -27,128 +27,147 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const NavBar(),
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          "glyco guide",
-          style: TextStyle(
-            fontFamily: 'Righteous',
-            fontSize: 35,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 65,
-        backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-            onPressed: () {
-              _showDoubleInputDialog(context);
-            },
-            icon: const Icon(
-              Icons.edit_note_rounded,
-              color: Colors.white,
-            ),
-            iconSize: 30.0,
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(emailTextController.text)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading...");
+          }
+
+          String name = snapshot.data!.get('Name');
+          return Scaffold(
+            drawer: const NavBar(),
+            appBar: AppBar(
+              iconTheme: const IconThemeData(color: Colors.white),
+              title: const Text(
+                "glyco guide",
+                style: TextStyle(
+                  fontFamily: 'Righteous',
+                  fontSize: 35,
+                  color: Colors.white,
                 ),
-              );
-            },
-            icon: const Icon(
-              Icons.person_sharp,
-              color: Colors.white,
-            ),
-            iconSize: 30.0,
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Center(
-              child: FutureBuilder<String>(
-                future: fetchData(textEditingController.text),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          snapshot.data ?? '',
-                          style: const TextStyle(
-                              fontSize: 16.0, color: Colors.white),
-                        ),
+              ),
+              centerTitle: true,
+              toolbarHeight: 65,
+              backgroundColor: Colors.black,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    showDoubleInputDialog(context);
+                  },
+                  icon: const Icon(
+                    Icons.edit_note_rounded,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30.0,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
                       ),
                     );
-                  }
-                },
-              ),
+                  },
+                  icon: const Icon(
+                    Icons.person_sharp,
+                    color: Colors.white,
+                  ),
+                  iconSize: 30.0,
+                ),
+              ],
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
-            child: Row(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController,
-                    style: const TextStyle(color: Colors.black),
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        fillColor: Colors.white,
-                        hintText: "Enter the name of a food item",
-                        hintStyle: TextStyle(color: Colors.grey.shade500),
-                        filled: true,
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor))),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () async {
-                    if (textEditingController.text.isNotEmpty) {
-                      String text = textEditingController.text;
-                      String result = await fetchData(text);
-
-                      setState(() {});
-                    }
-                  },
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.grey.shade800,
-                    child: const Center(
-                      child: Icon(Icons.send, color: Colors.white),
+                  child: Center(
+                    child: FutureBuilder<String>(
+                      future: fetchData(textEditingController.text),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                snapshot.data ?? '',
+                                style: const TextStyle(
+                                    fontSize: 16.0, color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: textEditingController,
+                          style: const TextStyle(color: Colors.black),
+                          cursorColor: Theme.of(context).primaryColor,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              fillColor: Colors.white,
+                              hintText: "Enter the name of a food item",
+                              hintStyle: TextStyle(color: Colors.grey.shade500),
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor))),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () async {
+                          if (textEditingController.text.isNotEmpty) {
+                            String text = textEditingController.text;
+                            String result = await fetchData(text);
+
+                            setState(() {});
+                          }
+                        },
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.grey.shade800,
+                          child: const Center(
+                            child: Icon(Icons.send, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 
-  void _showDoubleInputDialog(BuildContext context) {
+  void showDoubleInputDialog(BuildContext context) {
     TextEditingController bloodSugarController = TextEditingController();
 
     showDialog(
@@ -157,7 +176,7 @@ class HomePageState extends State<HomePage> {
         return AlertDialog(
           backgroundColor: Colors.white,
           title: const Text(
-            'Hi Parigyan,',
+            'Hi Manoj,',
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Montserrat',
