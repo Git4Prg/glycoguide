@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/app_screens/profile_details_screen.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
-// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/utils/constants.dart';
 
@@ -66,6 +64,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     'Username': userNameTextController.text,
                     'Email ID': emailTextController.text,
                     'Password': passwordTextController.text,
+                    'Monday bloodSugar': '0',
+                    'Tuesday bloodSugar': '0',
+                    'Wednesday bloodSugar': '0',
+                    'Thursday bloodSugar': '0',
+                    'Friday bloodSugar': '0',
+                    'Saturday bloodSugar': '0',
+                    'Sunday bloodSugar': '0',
                   });
 
                   FirebaseAuth.instance

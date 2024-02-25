@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/app_screens/homepage_screen.dart';
+import 'package:glycoguide/utils/constants.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
 import 'package:glycoguide/reset_password.dart';
 import 'package:glycoguide/app_screens/signup_screen.dart';
-// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -14,8 +14,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +31,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 30,
                 ),
                 reusableTextField("Enter UserName", Icons.person_outline, false,
-                    _emailTextController),
+                    emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Enter Password", Icons.lock_outline, true,
-                    _passwordTextController),
+                    passwordTextController),
                 const SizedBox(
                   height: 5,
                 ),
@@ -46,8 +44,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 firebaseUIButton(context, "Sign In", () {
                   FirebaseAuth.instance
                       .signInWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
+                          email: emailTextController.text,
+                          password: passwordTextController.text)
                       .then((value) {
                     Navigator.push(
                         context,

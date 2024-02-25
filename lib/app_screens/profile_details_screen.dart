@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/app_screens/medical_history_screen.dart';
-// import 'package:glycoguide/app_screens/signup_screen.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
-// import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/utils/constants.dart';
 
@@ -22,12 +20,12 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
   final heightTextController = TextEditingController();
   final weightTextController = TextEditingController();
   final eatingPrefTextController = TextEditingController();
-  final toleranceTextController = TextEditingController();
-  final allergyTextController = TextEditingController();
+  final lactoseIntoleranceTextController = TextEditingController();
+  final glutenIntoleranceTextController = TextEditingController();
+  final input6 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -36,7 +34,6 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
           style: TextStyle(
             fontFamily: 'Righteous',
             fontSize: 28,
-            // fontWeight: FontWeight,
             color: Colors.white,
           ),
         ),
@@ -77,34 +74,38 @@ class _SignUpScreenState extends State<ProfileDetailsScreen> {
                   height: 20,
                 ),
                 userDetailsTextField(
-                    "Lactose/Gluten tolerance", toleranceTextController),
+                    "Lactose Intolerance", lactoseIntoleranceTextController),
                 const SizedBox(
                   height: 20,
                 ),
-                userDetailsTextField("Allergy", allergyTextController),
+                userDetailsTextField(
+                    "Gluten Intolerance", glutenIntoleranceTextController),
+                const SizedBox(
+                  height: 20,
+                ),
+                userDetailsTextField("How often do you exercise?", input6),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Next", () {
-                  CollectionReference userDetails = FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(emailTextController.text)
-                      .collection('userDetails');
-                  userDetails.doc('General').set({
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
                     'Name': nameTextController.text,
                     'Age': ageTextController.text,
                     'Gender': genderTextController.text,
                     'Height': heightTextController.text,
                     'Weight': weightTextController.text,
                     'Eating Preference': eatingPrefTextController.text,
-                    'Lactose/Gluten Tolerance': toleranceTextController.text,
-                    'Allergy': allergyTextController.text,
+                    'Lactose Intolerance':
+                        lactoseIntoleranceTextController.text,
+                    'Gluten Intolerance': glutenIntoleranceTextController.text,
+                    'Exercise frequency': input6.text,
                   });
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MedicalHistory()));
-                  // }).onError((error, stackTrace) {});
                 })
               ],
             ),

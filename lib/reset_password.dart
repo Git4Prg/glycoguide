@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:glycoguide/utils/constants.dart';
 import 'package:glycoguide/utils/reusable_widget.dart';
-import 'package:glycoguide/home_screen.dart';
+import 'package:glycoguide/app_screens/homepage_screen.dart';
 import 'package:glycoguide/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -36,20 +37,20 @@ class _ResetPasswordState extends State<ResetPassword> {
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           child: SingleChildScrollView(
               child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
             child: Column(
               children: <Widget>[
                 const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Enter Email Id", Icons.person_outline, false,
-                    _emailTextController),
+                    emailTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Reset Password", () {
                   FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: _emailTextController.text)
+                      .sendPasswordResetEmail(email: emailTextController.text)
                       .then((value) => Navigator.of(context).pop());
                 })
               ],

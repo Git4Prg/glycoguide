@@ -1,31 +1,29 @@
-// import 'dart:convert';
-// import 'dart:async';
-import 'dart:io';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:glycoguide/api.dart';
 import 'package:flutter/material.dart';
 import 'package:glycoguide/app_screens/navbar_screen.dart';
-import 'package:glycoguide/bloc/chat_bloc.dart';
-import 'package:glycoguide/models/chat_message_model.dart';
 import 'package:glycoguide/app_screens/profile_page.dart';
 import 'package:glycoguide/utils/constants.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lottie/lottie.dart';
-// import 'package:glycoguide/settings.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:bloc/bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final ChatBloc chatBloc = ChatBloc();
+class HomePageState extends State<HomePage> {
   TextEditingController textEditingController = TextEditingController();
-  File? selectedImage;
+  String glycoguide = '';
+  Dio dio = Dio();
+  PlatformFile? pickedFile;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  DatabaseReference databaseRef = FirebaseDatabase.instance.ref();
 
   @override
   Widget build(BuildContext context) {
@@ -72,157 +70,82 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: BlocConsumer<ChatBloc, ChatState>(
-        bloc: chatBloc,
-        listener: (context, state) {},
-        builder: (context, state) {
-          switch (state.runtimeType) {
-            case ChatSuccessState:
-              List<ChatMessageModel> messages =
-                  (state as ChatSuccessState).messages;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Container(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   color: Color.fromARGB(255, 128, 131, 130),
-                  // ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 0, left: 10, right: 10),
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                messages[index].role == "user"
-                                    ? "User"
-                                    : "GlycoGuide",
-                                style: TextStyle(
-                                    fontSize: 25,
-                                    color: messages[index].role == "user"
-                                        ? Colors.amber.shade500
-                                        : Colors.green.shade500),
-                              ),
-                              // const SizedBox(
-                              //   height: 12,
-                              // ),
-                              Text(
-                                messages[index].parts.first.text,
-                                style: const TextStyle(
-                                  height: 1.2,
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Expanded(
+            child: Center(
+              child: FutureBuilder<String>(
+                future: fetchData(textEditingController.text),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          snapshot.data ?? '',
+                          style: const TextStyle(
+                              fontSize: 16.0, color: Colors.white),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: textEditingController,
+                    style: const TextStyle(color: Colors.black),
+                    cursorColor: Theme.of(context).primaryColor,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        fillColor: Colors.white,
+                        hintText: "Enter the name of a food item",
+                        hintStyle: TextStyle(color: Colors.grey.shade500),
+                        filled: true,
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor))),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                InkWell(
+                  onTap: () async {
+                    if (textEditingController.text.isNotEmpty) {
+                      String text = textEditingController.text;
+                      String result = await fetchData(text);
+
+                      setState(() {});
+                    }
+                  },
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey.shade800,
+                    child: const Center(
+                      child: Icon(Icons.send, color: Colors.white),
                     ),
                   ),
-                  if (chatBloc.generating)
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          height: 100,
-                          width: 100,
-                          child: Lottie.asset('assets/loader.json'),
-                        ),
-                        const SizedBox(width: 20),
-                        const Text(
-                          "Loading...",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 25, horizontal: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: textEditingController,
-                            style: const TextStyle(color: Colors.black),
-                            cursorColor: Theme.of(context).primaryColor,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                fillColor: Colors.white,
-                                hintText: "Ask about your diet plan",
-                                hintStyle:
-                                    TextStyle(color: Colors.grey.shade500),
-                                filled: true,
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(100),
-                                    borderSide: BorderSide(
-                                        color:
-                                            Theme.of(context).primaryColor))),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        InkWell(
-                          onTap: () {
-                            if (textEditingController.text.isNotEmpty) {
-                              String text = textEditingController.text;
-                              textEditingController.clear();
-                              chatBloc.add(ChatGenerateNewTextMessageEvent(
-                                  inputMessage: text));
-                            }
-                          },
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Colors.grey.shade800,
-                            child: const Center(
-                              child: Icon(Icons.send, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.grey.shade800,
-                          child: IconButton(
-                            onPressed: () {
-                              _pickImageFromGallery;
-                            },
-                            icon: const Icon(
-                              Icons.image_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              );
-
-            default:
-              return const SizedBox();
-          }
-        },
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ),
+        ],
       ),
     );
-  }
-
-  Future _pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (returnedImage == null) return;
-    setState(() {
-      selectedImage = File(returnedImage.path);
-    });
   }
 
   void _showDoubleInputDialog(BuildContext context) {
@@ -233,7 +156,7 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          title: Text(
+          title: const Text(
             'Hi Parigyan,',
             style: TextStyle(
               color: Colors.black,
@@ -271,12 +194,56 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               onPressed: () {
                 double? inputValue = double.tryParse(bloodSugarController.text);
-                if (inputValue != null) {
-                  // Do something with the input value
-                  print('Entered value: $inputValue');
-                } else {
-                  // Handle invalid input
-                  print('Invalid input');
+                if (inputValue != null && dayOfWeek == 'Monday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Monday bloodSugar ': bloodSugarController.text,
+                  });
+                  setState(() {});
+                }
+                if (inputValue != null && dayOfWeek == 'Tuesday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Tuesday bloodSugar ': bloodSugarController.text,
+                  });
+                  setState(() {});
+                }
+                if (inputValue != null && dayOfWeek == 'Wednesday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Wednesday bloodSugar ': bloodSugarController.text,
+                  });
+                }
+                if (inputValue != null && dayOfWeek == 'Thursday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Thursday bloodSugar ': bloodSugarController.text,
+                  });
+                }
+                if (inputValue != null && dayOfWeek == 'Friday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Friday bloodSugar ': bloodSugarController.text,
+                  });
+                }
+                if (inputValue != null && dayOfWeek == 'Saturday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Saturday bloodSugar ': bloodSugarController.text,
+                  });
+                }
+                if (inputValue != null && dayOfWeek == 'Sunday') {
+                  CollectionReference userDetails =
+                      FirebaseFirestore.instance.collection('Users');
+                  userDetails.doc(emailTextController.text).update({
+                    'Sunday bloodSugar ': bloodSugarController.text,
+                  });
                 }
                 Navigator.of(context).pop();
               },
